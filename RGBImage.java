@@ -97,5 +97,148 @@ public class RGBImage{
         refresh();
     }
 
+    public void flipHorizontal(){
+        int height = red.length;
+        int width = red[0].length;
+
+        int[][] tempR = new int[height][width];
+        int[][] tempB = new int[height][width];
+        int[][] tempG = new int[height][width];
+
+        for (int h = 0; h < height; h++) {
+            for (int w = 0; w < width; w++) {
+                tempR[h][w] = red[h][width -1 -w];
+                tempG[h][w] = green[h][width -1 -w];
+                tempB[h][w] = blue[h][width -1 -w];
+            }
+        }
+
+        for (int h = 0; h < height; h++) {
+            for (int w = 0; w < width; w++) {
+                red[h][w] = tempR[h][w];
+                green[h][w] = tempG[h][w];
+                blue[h][w] = tempB[h][w];
+            }
+        }
+
+        refresh();
+    }
+
+    public void greyScale(){
+
+        int height = red.length;
+        int width = red[0].length; 
+        int sum = 0;
+
+        for (int h = 0; h < height; h++) {
+            for (int w = 0; w < width; w++) {
+                sum = 0;
+                sum = (red[h][w] + green[h][w] + blue[h][w])/3;
+                red[h][w] = sum;
+                green[h][w] = sum;
+                blue[h][w] = sum;
+    
+    }
+    }
+    refresh();
+
+    }
+
+    public void mirror(){
+       int height = red.length;
+       int width = red[0].length;
+
+
+        for (int h = 0; h < height; h++) {
+            for (int w = 0; w < width/2; w++) {
+                red[h][w] = red[h][width -1 -w];
+                green[h][w] = green[h][width -1 -w];
+                blue[h][w] = blue[h][width -1 -w];
+            }
+        }
+
+        refresh();
+    }
+
+
+    public void blackAndWhite(){
+        int height = red.length;
+        int width = red[0].length; 
+        int sum = 0;
+
+        for (int h = 0; h < height; h++) {
+            for (int w = 0; w < width; w++) {
+                sum = 0;
+                sum = (red[h][w] + green[h][w] + blue[h][w])/3;
+                if (sum < 127){
+                    red[h][w] = 0;
+                    green[h][w] = 0;
+                    blue[h][w] = 0;
+                }
+                else{
+                    red[h][w] = 255;
+                    green[h][w] = 255;
+                    blue[h][w] = 255;
+                }
+    }
+}
+refresh();
+}
+
+public void contrastStretch() {
+        // TODO: scale channel values to fill range 0..255
+        int height = red.length;
+        int width = red[0].length;
+
+        int redMin = red[0][0];
+        int greenMin = green[0][0];
+        int blueMin = blue[0][0];
+
+        int redMax = red[0][0];
+        int greenMax = green[0][0];
+        int blueMax = blue[0][0];
+
+        for (int h = 0; h < height; h++) {
+            for (int w = 0; w < width; w++) {
+
+                if(red[h][w] < redMin)
+                    redMin = red[h][w];
+                
+                if(green[h][w] < greenMin);
+                    greenMin = green[h][w];
+
+                if(blue[h][w] < blueMin);
+                    blueMin = blue[h][w];
+            }
+        }
+
+            
+        
+        
+        for (int h = 0; h < height; h++) {
+            for (int w = 0; w < width; w++) {
+
+            if(red[h][w] > redMax)
+                redMax = red[h][w];
+                
+            if(green[h][w] > greenMax);
+                greenMax = green[h][w];
+
+            if(blue[h][w] > blueMax);
+                 blueMax = blue[h][w];
+            }
+        }
+
+        for (int h = 0; h < height; h++) {
+            for (int w = 0; w < width; w++) {
+                red[h][w] = 255*(red[h][w]-redMin)/(redMax-redMin);
+                blue[h][w] = 255*(blue[h][w]-blueMin)/(blueMax-blueMin);
+                green[h][w] = 255*(green[h][w]-greenMin)/(greenMax- greenMin);
+            }
+        }
+        
+        
+        refresh();
+    }
 
 }
